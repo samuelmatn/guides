@@ -20,28 +20,29 @@ nmcli device wifi connect <SSID> password <PASSWORD>
   * Partition the disk `/dev/nvme0n1`. Use automatic partitioning.
   * Set up LUKS encryption. Choose Automatic LUKS Encryption. Choose `/dev/nvme0n1p2`. Leave the default `cryptroot` as the block device name. Enter the encryption password.
   * Set up LVM. Choose Create VG and LV(s). Use `matebook_vg` as the volume group name. Select `/dev/mapper/cryptroot` as the physical volume. Create 1 logical volume. Use `matebook_lv` as the logical volume name.
-  * Mount partitions. Select `/dev/mapper/matebook_vg-matebook_lv` as the root partition. Format it as ext4. Keep `noatime` as the only mount option. Use swap file instead of swap partition. Specify `32G` as its size. Finish mounting partitions. Choose `/dev/nvme0n1p1` as the UEFI partition and reformat it. Keep `/boot/efi` as the UEFI mountpoint.
-  * Configure installer mirrorlist. Rank mirrors by speed. Keep only the stable branch selected. Select mirrors.
+  * Mount partitions. Select `/dev/mapper/matebook_vg-matebook_lv` as the root partition. Format it as ext4. Keep `noatime` as the only mount option. Use swap file instead of swap partition. Specify `32G` as its size. Finish mounting partitions. Choose `/dev/nvme0n1p1` as the UEFI partition and reformat it. Keep `/boot/efi` chosen as the UEFI mountpoint.
+  * Configure installer mirrorlist. Rank mirrors by speed. Keep only the stable branch selected. Select the mirrors.
 * Go back to the main menu and choose Install Desktop System.
-  * Select Install Manjaro desktop. Select yay+base-devel linux-lts and linux-latest from the base package group. Select kde as the desktop environment. Do not add additional packages. Select the full version. Select auto-install proprietary drivers.
-  * Select Install bootloader. Use grub. Set the bootloader as default.
-  * Select Configure base. Generate FSTAB using the default Device UUID option. Set hostname to samuel-matebook. Set system language and system locale as en_GB.UTF-8. Set desktop keyboard layout to us. Set timezone to Europe/Prague and use utc. Set root password. Create new user. Choose bash as the default shell.
-* Close the installer and shut down the machine.
+  * Choose Install Manjaro desktop. Select `yay+base-devel`, `linux-lts` and `linux-latest` from the base package group. Select KDE as the desktop environment. Do not add additional packages. Choose the full version. Choose auto-install proprietary drivers.
+  * Choose Install bootloader. Use GRUB. Set the bootloader as default.
+  * Choose Configure base. Generate `fstab` using the default Device UUID option. Set the hostname, I used `samuel-matebook`. Set the system language and the system locale, I chose `en_GB.UTF-8`. Set the desktop keyboard layout. Set the timezone to and use UTC. Set the root password. Create a new user. Choose Bash as the default shell.
+* Close the installer and shut down the machine. Remove the bootable USB drive.
 ```
 systemctl poweroff
 ```
 
 ## Quick fixes
 
+* Start the machine and log in.
 * Open System Settings.
   * In Display and Monitor > Display Configuration, set Global scale to 200%.
   * In Cursors, set the cursor size to 48.
   * In Startup and Shutdown > Login Screen (SDDM), synchronise the Plasma settings with SDDM.
-  * In Input Devices > Touchpad, select Invert scroll direction.
+  * In Input Devices > Touchpad, enable Invert scroll direction.
 * Set the panel height to 76.
 * Restart the machine.
 
-## Set up periodic TRIM
+## Setting up periodic TRIM
 
 * Verify TRIM support.
 ```
