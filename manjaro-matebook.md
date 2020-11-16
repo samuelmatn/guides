@@ -2,10 +2,10 @@
 
 ## Preparation
 
-* Download the latest version of Manjaro Architect.
-* Create a bootable USB drive using Etcher.
+* [Download](https://manjaro.org/download/) the latest release of Manjaro Architect.
+* Create a bootable USB drive using [Etcher](https://www.balena.io/etcher/).
 * During the start up, hold the F2 key to enter the BIOS menu. Disable Secure Boot and exit saving changes.
-* During the start up, hold the F12 key to enter the boot manager. Select the bootable USB drive. Boot Manjaro Architect and log in.
+* During the start up, hold the F12 key to enter the boot manager. Select the bootable USB drive. After Manjaro Architect boots up, log in.
 * Connect to WiFi.
 ```
 nmcli device wifi list
@@ -19,8 +19,8 @@ nmcli device wifi connect <SSID> password <PASSWORD>
   * Set virtual console to `us`.
   * Partition the disk `/dev/nvme0n1`. Use automatic partitioning.
   * Set up LUKS encryption. Choose Automatic LUKS Encryption. Choose `/dev/nvme0n1p2`. Leave the default `cryptroot` as the block device name. Enter the encryption password.
-  * Set up LVM. Select Create VG and LV(s). Use matebook_vg as the volume group name. Select /dev/mapper/cryptroot as the physical volume. Create 1 logical volume. Use matebook_lv as the logical volume name.
-  * Mount partitions. Select /dev/mapper/matebook_vg-matebook_lv as the ROOT partition. Format it as ext4. Keep noatime as the only mount option. Use swapfile instead of a SWAP partition. Specify 32G as the size. Finish mounting partitions. Select /dev/nvme0n1p1 as UEFI partition. Reformat it. Keep /boot/efi as the UEFI mountpoint.
+  * Set up LVM. Choose Create VG and LV(s). Use `matebook_vg` as the volume group name. Select `/dev/mapper/cryptroot` as the physical volume. Create 1 logical volume. Use `matebook_lv` as the logical volume name.
+  * Mount partitions. Select `/dev/mapper/matebook_vg-matebook_lv` as the root partition. Format it as ext4. Keep `noatime` as the only mount option. Use swap file instead of swap partition. Specify `32G` as its size. Finish mounting partitions. Choose `/dev/nvme0n1p1` as the UEFI partition and reformat it. Keep `/boot/efi` as the UEFI mountpoint.
   * Configure installer mirrorlist. Rank mirrors by speed. Keep only the stable branch selected. Select mirrors.
 * Go back to the main menu and choose Install Desktop System.
   * Select Install Manjaro desktop. Select yay+base-devel linux-lts and linux-latest from the base package group. Select kde as the desktop environment. Do not add additional packages. Select the full version. Select auto-install proprietary drivers.
