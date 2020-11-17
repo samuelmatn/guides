@@ -1,5 +1,21 @@
 # Installing Manjaro Linux on Huawei MateBook X Pro 2020
 
+* Works immediately:
+  * Wi-Fi and Bluetooth
+  * webcam and microphone
+  * HDMI external display through Huawei MateDock 2 (with sound)
+  * battery charging thresholds (no GUI)
+  * touchscreen (mostly useless in X11)
+* Works after configuration:
+  * HiDPI scaling
+  * SSD TRIM
+  * hibernation
+  * 4.0 surround sound
+  * multitouch gestures
+* Doesn't work:
+  * fingerprint reader
+  * microphone toggle indicator
+
 ## Preparation
 
 * Download the latest release of Manjaro Architect.
