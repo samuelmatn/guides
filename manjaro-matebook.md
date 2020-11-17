@@ -148,3 +148,23 @@ sudo mkinitcpio -P
 * Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output as the profile.
 
 ## Setting up multitouch gestures
+
+* Install `libinput-gestures`.
+```
+sudo pacman -S libinput-gestures
+```
+* Create `libinput-gestures.conf`. Configure swipe left/right to move between desktops, swipe up to show desktop grid and swipe down to toggle present windows.
+```
+nano ~/.config/libinput-gestures.conf
+```
+```
+gesture swipe left _internal --wrap ws_up
+gesture swipe right _internal --wrap ws_down
+gesture swipe up xdotool key ctrl+F8
+gesture swipe down xdotool key ctrl+F9
+```
+* Launch `libinput-gestures` and let it launch automatically next time.
+```
+libinput-gestures-setup start
+libinput-gestures-setup autostart
+```
