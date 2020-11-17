@@ -7,10 +7,10 @@
 * During the start up, hold the F2 key to enter the BIOS menu. Disable Secure Boot and exit saving changes.
 * During the start up, hold the F12 key to enter the boot manager. Select the bootable USB drive. After Manjaro Architect boots up, log in.
 * Connect to WiFi.
-  ```
-  nmcli device wifi list
-  nmcli device wifi connect <SSID> password <PASSWORD>
-  ```
+```
+nmcli device wifi list
+nmcli device wifi connect <SSID> password <PASSWORD>
+```
 
 ## Installation
 
@@ -27,9 +27,9 @@
   * Choose Install bootloader. Use GRUB. Set the bootloader as default.
   * Choose Configure base. Generate `fstab` using the default Device UUID option. Set the hostname. Set the system language and the system locale. Set the desktop keyboard layout. Set the timezone to and use UTC. Set the root password. Create a new user. Choose Bash as the default shell.
 * Close the installer and shut down the machine. Remove the bootable USB drive.
-  ```
-  systemctl poweroff
-  ```
+```
+systemctl poweroff
+```
 
 ## Quick fixes
 
@@ -44,13 +44,14 @@
 
 ## Setting up periodic TRIM
 
-* Edit GRUB configuration. Pass the `allow-discards` option to the kernel.
-  ```
-  sudo nano /etc/default/grub
-  ```
-  ```
-  GRUB_CMDLINE_LINUX="cryptdevice=UUID=<UUID>:cryptroot:allow-discards"
-  ```
+* Edit `/etc/default/grub`. Pass the `allow-discards` option to the kernel.
+```
+sudo nano /etc/default/grub
+```
+```
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=<UUID>:cryptroot:allow-discards"
+```
+* Update the GRUB configuration file.
 ```
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
@@ -59,15 +60,15 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 lsblk --discard
 ```
-* Try executing TRIM command.
+* Manually discard the unused blocks on the filesystem.
 ```
 sudo fstrim -v /
 ```
-* Check the existence and status of fstrim timer service.
+* Check the existence and the status of the `fstrim` timer.
 ```
 sudo systemctl status fstrim.timer
 ```
-* Enable fstrim timer service.
+* Enable the `fstrim` timer.
 ```
 sudo systemctl enable fstrim.timer
 ```
