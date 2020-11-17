@@ -147,7 +147,7 @@ sudo mkinitcpio -P
 * Restart the machine.
 * Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output as the profile.
 
-## Setting up multitouch gestures
+## Setting up multitouch gestures (optional)
 
 * Install `libinput-gestures`.
 ```
@@ -167,4 +167,34 @@ gesture swipe down xdotool key ctrl+F9
 ```
 libinput-gestures-setup start
 libinput-gestures-setup autostart
+```
+
+## Remapping the hotkeys (optional)
+
+* Install `evtest`.
+```
+sudo pacman -S evtest
+```
+* Find the event handler for Huawei WMI hotkeys. 
+```
+cat /proc/bus/input/devices
+```
+* Find the values of the hotkeys to remap.
+```
+sudo evtest /dev/input/<EVENT_HANDLER>
+```
+* Create `90-custom-hotkeys.hwdb`. Remap the microphone toggle to previous song, the WiFi toggle to play/pause and the PC Manager launcher to next song.
+```
+sudo nano /etc/udev/hwdb.d/90-custom-hotkeys.hwdb
+```
+```
+evdev:name:Huawei WMI hotkeys:*
+ KEYBOARD_KEY_287=previoussong
+ KEYBOARD_KEY_289=playpause
+ KEYBOARD_KEY_28a=nextsong
+```
+* Update the hardware database. Reapply the rules in the device manager.
+```
+sudo systemd-hwdb update
+sudo udevadm trigger
 ```
