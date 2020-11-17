@@ -198,3 +198,30 @@ evdev:name:Huawei WMI hotkeys:*
 sudo systemd-hwdb update
 sudo udevadm trigger
 ```
+
+## Disable middle-click paste (optional)
+
+* In Clipboard configuration, disable Prevent empty clipboard.
+* Install.
+```
+sudo pacman -S --needed xbindkeys xsel xdotool
+```
+* Create `.xbindkeysrc` and disable middle click paste.
+```
+nano ~/.xbindkeysrc
+```
+```
+"echo -n | xsel -n -i; pkill xbindkeys; xdotool click 2; xbindkeys"
+b:2 + Release
+```
+* Launch `xbindkeys` manually.
+```
+xbindkeys
+```
+* Open System Settings. In Startup and Shutdown > Autostart, add `xbindkeys` as an application.
+
+## References
+
+* [How can I turn off “middle mouse button paste” functionality in all programs?](https://unix.stackexchange.com/questions/24330/how-can-i-turn-off-middle-mouse-button-paste-functionality-in-all-programs) Unix & Linux Stack Exchange
+* [Fix Huawei MateBook X Pro Speakers on Linux](https://github.com/hg8/arch-matebook-x-pro-2019/blob/master/guide-fix-matebook-x-pro-speakers-linux.md) hg8 on GitHub
+* [Arch Adventures: Hibernating to swap file](https://vadosware.io/2015/10/15/arch-adventures-hibernating-to-swap-file/) VADOSWARE
