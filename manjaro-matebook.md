@@ -2,8 +2,8 @@
 
 ## Preparation
 
-* [Download](https://manjaro.org/download/) the latest release of Manjaro Architect.
-* Create a bootable USB drive using [Etcher](https://www.balena.io/etcher/).
+* Download the latest release of Manjaro Architect.
+* Create a bootable USB drive using Etcher.
 * During the start up, hold the F2 key to enter the BIOS menu. Disable Secure Boot and exit saving changes.
 * During the start up, hold the F12 key to enter the boot manager. Select the bootable USB drive. After Manjaro Architect boots up, log in.
 * Connect to WiFi.
@@ -72,3 +72,36 @@ sudo systemctl status fstrim.timer
 ```
 sudo systemctl enable fstrim.timer
 ```
+
+## Enabling hibernation
+
+* Edit `/etc/mkinitcpio.conf`. Add the `resume` hook as the last one.
+```
+sudo nano /etc/mkinitcpio.conf
+```
+```
+HOOKS=(base udev autodetect keymap modconf block encrypt lvm2 filesystems keyboard resume)
+```
+* Update the initial ramdisk environment.
+```
+sudo mkinitcpio -P
+```
+* Find the physical offset of the swap file. It corresponds to the logical offset 0.
+```
+sudo filefrag -v /swapfile
+```
+* Edit `/etc/default/grub`. Specify `matebook_vg-matebook_lv` as the resume device and the physical offset as the resume offset.
+```
+sudo nano /etc/default/grub
+```
+```
+GRUB_CMDLINE_LINUX="resume=/dev/mapper/matebook_vg-matebook_lv resume_offset=<PHYSICAL_OFFSET> cryptdevice=UUID=<UUID>:cryptroot:allow-discards"
+```
+* Update the GRUB configuration file.
+```
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+* Restart the machine.
+
+## Enabling 4.0 surround speakers
+
