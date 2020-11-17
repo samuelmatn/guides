@@ -6,7 +6,7 @@
 * Create a bootable USB drive using Etcher.
 * During the start up, hold the F2 key to enter the BIOS menu. Disable Secure Boot and exit saving changes.
 * During the start up, hold the F12 key to enter the boot manager. Select the bootable USB drive. After Manjaro Architect boots up, log in.
-* Connect to WiFi.
+* Connect to Wi-Fi.
 ```
 nmcli device wifi list
 nmcli device wifi connect <SSID> password <PASSWORD>
@@ -33,7 +33,7 @@ systemctl poweroff
 
 ## Quick fixes
 
-* Start the machine and log in.
+* Start the machine.
 * Open System Settings.
   * In Display and Monitor > Display Configuration, set Global scale to 200%.
   * In Cursors, set the cursor size to 48.
@@ -42,9 +42,9 @@ systemctl poweroff
 * Set the panel height to 76.
 * Restart the machine.
 
-## Setting up periodic TRIM
+## Enable periodic TRIM
 
-* Edit `/etc/default/grub`. Pass the `allow-discards` option to the kernel.
+* Edit GRUB configuration. Pass the `allow-discards` option to the kernel.
 ```
 sudo nano /etc/default/grub
 ```
@@ -73,9 +73,9 @@ sudo systemctl status fstrim.timer
 sudo systemctl enable fstrim.timer
 ```
 
-## Enabling hibernation
+## Enable hibernation
 
-* Edit `/etc/mkinitcpio.conf`. Add the `resume` hook as the last one.
+* Edit `mkinitcpio.conf`. Add the `resume` hook as the last one.
 ```
 sudo nano /etc/mkinitcpio.conf
 ```
@@ -90,7 +90,7 @@ sudo mkinitcpio -P
 ```
 sudo filefrag -v /swapfile
 ```
-* Edit `/etc/default/grub`. Specify `matebook_vg-matebook_lv` as the resume device and the physical offset as the resume offset.
+* Edit GRUB configuration. Specify `matebook_vg-matebook_lv` as the resume device and the physical offset as the resume offset.
 ```
 sudo nano /etc/default/grub
 ```
@@ -103,7 +103,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 * Restart the machine.
 
-## Setting up 4.0 surround speakers
+## Set up 4.0 surround speakers
 
 * Install ALSA Tools.
 ```
@@ -133,7 +133,7 @@ sudo hdajackretask
   * Channel group: 1
   * Channel (in group): Back
 * On the bottom right, click Install boot override.
-* Edit `/etc/mkinitcpio.conf`. Add `hda-jack-retask.fw` to files.
+* Edit `mkinitcpio.conf`. Add `hda-jack-retask.fw` to the image.
 ```
 sudo nano /etc/mkinitcpio.conf
 ```
@@ -147,13 +147,13 @@ sudo mkinitcpio -P
 * Restart the machine.
 * Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output as the profile.
 
-## Setting up multitouch gestures (optional)
+## Set up multitouch gestures (optional)
 
-* Install `libinput-gestures`.
+* Install `libinput-gestures` and `xdotool`.
 ```
-sudo pacman -S libinput-gestures
+sudo pacman -S libinput-gestures xdotool
 ```
-* Create `libinput-gestures.conf`. Configure swipe left/right to move between desktops, swipe up to show desktop grid and swipe down to toggle present windows.
+* Create `libinput-gestures.conf`. Configure swipe left/right to move between desktops, swipe up to show Desktop Grid and swipe down to toggle present windows.
 ```
 nano ~/.config/libinput-gestures.conf
 ```
@@ -163,13 +163,13 @@ gesture swipe right _internal --wrap ws_down
 gesture swipe up xdotool key ctrl+F8
 gesture swipe down xdotool key ctrl+F9
 ```
-* Launch `libinput-gestures` and let it launch automatically next time.
+* Launch `libinput-gestures` manually and set up autostart.
 ```
 libinput-gestures-setup start
 libinput-gestures-setup autostart
 ```
 
-## Remapping the hotkeys (optional)
+## Remap hotkeys (optional)
 
 * Install `evtest`.
 ```
@@ -179,11 +179,11 @@ sudo pacman -S evtest
 ```
 cat /proc/bus/input/devices
 ```
-* Find the values of the hotkeys to remap.
+* Find the values of the hotkeys to be remapped.
 ```
 sudo evtest /dev/input/<EVENT_HANDLER>
 ```
-* Create `90-custom-hotkeys.hwdb`. Remap the microphone toggle to previous song, the WiFi toggle to play/pause and the PC Manager launcher to next song.
+* Create `90-custom-hotkeys.hwdb`. Remap the microphone toggle to previous song, the Wi-Fi toggle to play/pause and the PC Manager launcher to next song.
 ```
 sudo nano /etc/udev/hwdb.d/90-custom-hotkeys.hwdb
 ```
@@ -201,12 +201,12 @@ sudo udevadm trigger
 
 ## Disable middle-click paste (optional)
 
-* In Clipboard configuration, disable Prevent empty clipboard.
-* Install.
+* Open Clipboard configuration. In General, disable Prevent empty clipboard.
+* Install `xbindkeys`, `xsel` and `xdotool`.
 ```
 sudo pacman -S --needed xbindkeys xsel xdotool
 ```
-* Create `.xbindkeysrc` and disable middle click paste.
+* Create `.xbindkeysrc` and disable middle-click paste.
 ```
 nano ~/.xbindkeysrc
 ```
@@ -220,8 +220,52 @@ xbindkeys
 ```
 * Open System Settings. In Startup and Shutdown > Autostart, add `xbindkeys` as an application.
 
+## Change the battery charging thresholds (optional)
+* Edit `charge_control_thresholds`. Set up to start charging at 75% (or below) and stop charging at 80% (or above).
+```
+sudo nano /sys/devices/platform/huawei-wmi/charge_control_thresholds
+```
+```
+75 80
+```
+
+## Final steps (optional)
+
+* Install Breeze GTK theme.
+```
+sudo pacman -S breeze-gtk
+```
+* Uninstall Steam.
+```
+sudo pacman -Rs steam-manjaro
+```
+* Uninstall Yakuake.
+```
+sudo pacman -Rs yakuake 
+```
+* Uninstall Manjaro Hello.
+```
+sudo pacman -Rs manjaro-hello
+```
+* Uninstall K3b.
+```
+sudo pacman -Rs k3b
+```
+* Uninstall Konverstaion.
+```
+sudo pacman -Rs konversation
+```
+* Uninstall Cantata and MPD.
+```
+sudo pacman -Rs cantata mpd
+```
+
 ## References
 
-* [How can I turn off “middle mouse button paste” functionality in all programs?](https://unix.stackexchange.com/questions/24330/how-can-i-turn-off-middle-mouse-button-paste-functionality-in-all-programs) Unix & Linux Stack Exchange
-* [Fix Huawei MateBook X Pro Speakers on Linux](https://github.com/hg8/arch-matebook-x-pro-2019/blob/master/guide-fix-matebook-x-pro-speakers-linux.md) hg8 on GitHub
-* [Arch Adventures: Hibernating to swap file](https://vadosware.io/2015/10/15/arch-adventures-hibernating-to-swap-file/) VADOSWARE
+* [Encrypted Manjaro Installation using Manjaro Architect](https://forum.manjaro.org/t/encrypted-manjaro-installation-using-manjaro-architect/2709) - Manjaro Linux Forum
+* [Arch Adventures: Hibernating to swap file](https://vadosware.io/2015/10/15/arch-adventures-hibernating-to-swap-file/) - VADOSWARE
+* [Fix Huawei MateBook X Pro Speakers on Linux](https://github.com/hg8/arch-matebook-x-pro-2019/blob/master/guide-fix-matebook-x-pro-speakers-linux.md) - hg8 on GitHub
+* [Linux keymapping with udev hwdb](https://yulistic.gitlab.io/2017/12/linux-keymapping-with-udev-hwdb/) - Yulistic
+* [Remapping ThinkPad Keys with udev hwdb](https://blog.zhanghai.me/remapping-keys-with-udev-hwdb/) - Hai Zhang's blog
+* [How can I turn off “middle mouse button paste” functionality in all programs?](https://unix.stackexchange.com/questions/24330/how-can-i-turn-off-middle-mouse-button-paste-functionality-in-all-programs) - Unix & Linux Stack Exchange
+* [Huawei WMI laptop extras linux driver](https://github.com/aymanbagabas/Huawei-WMI) - Ayman Bagabas on GitHub
