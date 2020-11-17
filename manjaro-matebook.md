@@ -82,7 +82,7 @@ sudo nano /etc/mkinitcpio.conf
 ```
 HOOKS=(base udev autodetect keymap modconf block encrypt lvm2 filesystems keyboard resume)
 ```
-* Update the initial ramdisk environment.
+* Update `initramfs`.
 ```
 sudo mkinitcpio -P
 ```
@@ -103,5 +103,46 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 * Restart the machine.
 
-## Enabling 4.0 surround speakers
+## Setting up 4.0 surround speakers
 
+* Install ALSA Tools.
+```
+sudo pacman -S alsa-tools
+```
+* Launch HDAJackRetask as root.
+```
+sudo hdajackretask
+```
+* On the top, select Realtek ALC256 codec. On the right, enable Show unconnected pins and Advanced overrides.
+* Enable Override on Pin ID 0x14.
+  * Connectivity: Internal
+  * Location: Internal
+  * Device: Speaker
+  * Jack: Other Analog
+  * Color: Unknown
+  * Jack detection: Not present
+  * Channel g/etc/mkiniticpio.confroup: 1
+  * Channel (in group): Front
+* Enable Override on Pin ID 0x1b.
+  * Connectivity: Internal
+  * Location: Internal
+  * Device: Speaker
+  * Jack: Other Analog
+  * Color: Unknown
+  * Jack detection: Not present
+  * Channel group: 1
+  * Channel (in group): Back
+* On the bottom right, click Install boot override.
+* Edit `/etc/mkinitcpio.conf`. Add `hda-jack-retask.fw` to files.
+```
+sudo nano /etc/mkinitcpio.conf
+```
+```
+FILES=(/crypto_keyfile.bin /usr/lib/firmware/hda-jack-retask.fw)
+```
+* Update `initramfs`.
+```
+sudo mkinitcpio -P
+```
+* Restart the machine.
+* Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output as the profile.
