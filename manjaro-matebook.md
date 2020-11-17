@@ -7,10 +7,10 @@
 * During the start up, hold the F2 key to enter the BIOS menu. Disable Secure Boot and exit saving changes.
 * During the start up, hold the F12 key to enter the boot manager. Select the bootable USB drive. After Manjaro Architect boots up, log in.
 * Connect to WiFi.
-```
-nmcli device wifi list
-nmcli device wifi connect <SSID> password <PASSWORD>
-```
+  ```
+  nmcli device wifi list
+  nmcli device wifi connect <SSID> password <PASSWORD>
+  ```
 
 ## Installation
 
@@ -25,11 +25,11 @@ nmcli device wifi connect <SSID> password <PASSWORD>
 * Go back to the main menu and choose Install Desktop System.
   * Choose Install Manjaro desktop. Select `yay+base-devel`, `linux-lts` and `linux-latest` from the base package group. Select KDE as the desktop environment. Do not add additional packages. Choose the full version. Choose auto-install proprietary drivers.
   * Choose Install bootloader. Use GRUB. Set the bootloader as default.
-  * Choose Configure base. Generate `fstab` using the default Device UUID option. Set the hostname, I used `samuel-matebook`. Set the system language and the system locale, I chose `en_GB.UTF-8`. Set the desktop keyboard layout. Set the timezone to and use UTC. Set the root password. Create a new user. Choose Bash as the default shell.
+  * Choose Configure base. Generate `fstab` using the default Device UUID option. Set the hostname. Set the system language and the system locale. Set the desktop keyboard layout. Set the timezone to and use UTC. Set the root password. Create a new user. Choose Bash as the default shell.
 * Close the installer and shut down the machine. Remove the bootable USB drive.
-```
-systemctl poweroff
-```
+  ```
+  systemctl poweroff
+  ```
 
 ## Quick fixes
 
@@ -44,6 +44,17 @@ systemctl poweroff
 
 ## Setting up periodic TRIM
 
+* Edit GRUB configuration. Pass the `allow-discards` option to the kernel.
+  ```
+  sudo nano /etc/default/grub
+  ```
+  ```
+  GRUB_CMDLINE_LINUX="cryptdevice=UUID=<UUID>:cryptroot:allow-discards"
+  ```
+```
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+* Restart the machine.
 * Verify TRIM support.
 ```
 lsblk --discard
