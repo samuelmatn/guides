@@ -114,16 +114,16 @@ sudo pacman -S alsa-tools
 sudo hdajackretask
 ```
 * On the top, select Realtek ALC256 codec. On the right, enable Show unconnected pins and Advanced overrides.
-* Enable Override on Pin ID 0x14.
+* Enable Override on Pin ID 0x14. Set the following values:
   * Connectivity: Internal
   * Location: Internal
   * Device: Speaker
   * Jack: Other Analog
   * Color: Unknown
   * Jack detection: Not present
-  * Channel g/etc/mkiniticpio.confroup: 1
+  * Channel group: 1
   * Channel (in group): Front
-* Enable Override on Pin ID 0x1b.
+* Enable Override on Pin ID 0x1b. Set the following values:
   * Connectivity: Internal
   * Location: Internal
   * Device: Speaker
@@ -146,3 +146,5 @@ sudo mkinitcpio -P
 ```
 * Restart the machine.
 * Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output as the profile.
+
+## Setting up multitouch gestures
