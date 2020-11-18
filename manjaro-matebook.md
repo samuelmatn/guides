@@ -1,6 +1,6 @@
 # Installing Manjaro Linux on Huawei MateBook X Pro 2020
 
-This guide describes installation of Manjaro Linux with LVM on LUKS drive encryption. KDE Plasma is used as the desktop environment. Tested on a machine with Intel Core i7-10510U and NVIDIA GeForce MX250.
+This guide describes the installation of Manjaro Linux with LVM on LUKS drive encryption. KDE Plasma is used as the desktop environment. Tested on a machine with Intel Core i7-10510U and NVIDIA GeForce MX250.
 * Works immediately:
   * Wi-Fi and Bluetooth
   * webcam and microphone
@@ -163,7 +163,7 @@ FILES=(/crypto_keyfile.bin /usr/lib/firmware/hda-jack-retask.fw)
 sudo mkinitcpio -P
 ```
 * Restart the machine.
-* Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output as the profile.
+* Open System Settings. In Audio > Advanced, choose Analog Surround 4.0 Output + Analog Stereo Input as the profile.
 
 ## Set up multitouch gestures (optional)
 
