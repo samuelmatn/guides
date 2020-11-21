@@ -1,4 +1,4 @@
-# Installing Manjaro Linux on Huawei MateBook X Pro 2020
+# Install Manjaro Linux on Huawei MateBook X Pro 2020
 
 This guide describes the installation of Manjaro Linux with LVM on LUKS drive encryption. KDE Plasma is used as the desktop environment. Tested on a machine with Intel Core i7-10510U and NVIDIA GeForce MX250.
 * Works immediately:
@@ -278,6 +278,47 @@ sudo pacman -Rs konversation
 sudo pacman -Rs cantata mpd
 ```
 
+## Use VMware Workstation to run Windows 10 (optional)
+
+* Install Linux kernel headers.
+```
+sudo pacman -S linux-lts-headers linux-latest-headers
+```
+* Install VMware Workstation.
+```
+pamac build vmware-workstation
+```
+* Insert the VMware kernel modules.
+```
+sudo modprobe -a vmw_vmci vmmon
+```
+* Enable and manually start the VMware services.
+```
+sudo systemctl enable vmware-networks.service  vmware-usbarbitrator.service
+sudo systemctl start vmware-networks.service  vmware-usbarbitrator.service
+```
+* Edit the VMware Workstation preferences file. Add the option to completely hide the toolbar in full-screen mode.
+```
+nano ~/.vmware/preferences
+```
+```
+pref.vmplayer.fullscreen.nobar = "TRUE"
+```
+* Launch VMware Player and create a new virtual machine located in `~/VMware/Windows 10`. Close VMware Player.
+* Export the Microsoft Data Management table to a file.
+```
+sudo cat /sys/firmware/acpi/tables/MSDM > ~/VMware/MSDM.bin
+```
+* Edit the virtual machine configuration file. Add the option to reflect the host BIOS management information. Add the exported table to the guest ACPI tables.
+```
+nano "~/VMware/Windows 10/Windows 10.vmx"
+```
+```
+SMBIOS.reflectHost = "TRUE"
+acpi.addtable.filename = "~/VMware/MSDM.bin"
+```
+* Launch VMware Player and install Windows 10 inside the virtual machine. Install VMware Tools.
+
 ## References
 
 * [Encrypted Manjaro Installation using Manjaro Architect](https://forum.manjaro.org/t/encrypted-manjaro-installation-using-manjaro-architect/2709) - Manjaro Linux Forum
@@ -287,3 +328,6 @@ sudo pacman -Rs cantata mpd
 * [Remapping ThinkPad Keys with udev hwdb](https://blog.zhanghai.me/remapping-keys-with-udev-hwdb/) - Hai Zhang's blog
 * [How can I turn off “middle mouse button paste” functionality in all programs?](https://unix.stackexchange.com/questions/24330/how-can-i-turn-off-middle-mouse-button-paste-functionality-in-all-programs) - Unix & Linux Stack Exchange
 * [Huawei WMI laptop extras linux driver](https://github.com/aymanbagabas/Huawei-WMI) - Ayman Bagabas on GitHub
+* [Can I completely hide toolbar in VMware Workstation?](https://superuser.com/questions/246644/can-i-completely-hide-toolbar-in-vmware-workstation) - Super User Stack Exchange
+* [How to edit BIOS information for a virtual machine in VMWare?](https://superuser.com/questions/199906/how-to-edit-bios-information-for-a-virtual-machine-in-vmware) - Super User Stack Exchange
+* [Replace ACPI Tables in VMware BIOS](https://communities.vmware.com/t5/ESXi-Discussions/Replace-ACPI-Tables-in-VMware-BIOS/td-p/426629) - VMware Technology Network
